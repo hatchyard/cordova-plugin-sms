@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-android-sms-autoread" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>SMSAutoRead</name>
+    <js-module name="SMSAutoRead" src="www/SMSAutoRead.js">
+        <clobbers target="cordova.plugins.SMSAutoRead" />
+    </js-module>
+    <platform name="android">
+        <framework src="com.google.android.gms:play-services-auth:20.1.0"/>
+        <framework src="com.google.android.gms:play-services-auth-api-phone:18.0.1"/>
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="SMSAutoRead">
+                <param name="android-package" value="com.ishara11rathnayake.smsautoread.SMSAutoRead" />
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml"></config-file>
+        <source-file src="src/android/SMSAutoRead.java" target-dir="src/com/ishara11rathnayake/smsautoread/SMSAutoRead" />
+    </platform>
+</plugin>
