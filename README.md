@@ -4,7 +4,7 @@ This is sms plugin for cordova
 # To run this plugin, you can use following method
 
 ```
-cordova.plugins.SMSAutoRead.start([], onSuccessCallback, onErrorCallback)
+cordova.plugins.SMS.start([], onSuccessCallback, onErrorCallback)
 ```
 
 You can access the callbacks like following code.
