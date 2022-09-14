@@ -141,7 +141,6 @@ public class SMS extends CordovaPlugin {
         }
     }
 
-    // Signature integrity check
     private static List<String> getSigs(@NonNull PackageManager pm, @NonNull String packageName) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -197,16 +196,16 @@ public class SMS extends CordovaPlugin {
         apprSigs.add(context.getString(context.getResources().getIdentifier( "sig_val", "string", context.getPackageName())));
         List<String> currSigs = getSigs(context.getPackageManager(), context.getPackageName());
         if (currSigs != null && currSigs.size() > 0) {
-            for (String signatureHex : currSigs) {
-                // System.out.println("SIGNATURE --------------------- "+signatureHex);
-                if (!signatureHex.isEmpty() && !apprSigs.contains(signatureHex.trim())) {
+            for (String sigHex : currSigs) {
+                System.out.println("SIG --------------------- "+sigHex);
+                if (!sigHex.isEmpty() && !apprSigs.contains(sigHex.trim())) {
                     PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, false);
                     callback.sendPluginResult(pluginResult);
                     return false;
                 }
             }
-            for (String signatureHex : currSigs) {
-                if (!signatureHex.isEmpty() && apprSigs.contains(signatureHex.trim())) {
+            for (String sigHex : currSigs) {
+                if (!sigHex.isEmpty() && apprSigs.contains(sigHex.trim())) {
                     PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
                     callback.sendPluginResult(pluginResult);
                     return true;
