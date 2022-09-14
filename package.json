@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-android-sms-autoread",
+  "name": "cordova-plugin-sms",
   "version": "1.0.0",
-  "description": "One-tap SMS verification with the SMS User Consent API",
+  "description": "SMS",
   "cordova": {
-    "id": "cordova-plugin-android-sms-autoread",
+    "id": "cordova-plugin-sms",
     "platforms": [
       "android"
     ]
@@ -12,6 +12,6 @@
     "ecosystem:cordova",
     "cordova-android"
   ],
-  "author": "Ishara Rathnayake",
+  "author": "Champika Mendis",
   "license": "ISC"
 }

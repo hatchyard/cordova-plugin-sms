@@ -1,4 +1,4 @@
-package com.ishara11rathnayake.smsautoread;
+package com.sms;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -49,7 +49,7 @@ import androidx.annotation.NonNull;
 /**
  * This class echoes a string called from JavaScript.
  */
-public class SMSAutoRead extends CordovaPlugin {
+public class SMS extends CordovaPlugin {
 
     BroadcastReceiver smsBroadcastReceiver;
     private static final int REQ_USER_CONSENT = 200;
@@ -99,7 +99,7 @@ public class SMSAutoRead extends CordovaPlugin {
             cordova.getActivity().getApplicationContext().registerReceiver(smsBroadcastReceiver, intentFilter);
             return true;
         } else {
-            return this.verifySig(SMSAutoRead.this.cordova.getActivity(), callback);
+            return this.verifySig(SMS.this.cordova.getActivity(), callback);
         }
     }
 
