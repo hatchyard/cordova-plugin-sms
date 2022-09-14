@@ -99,7 +99,7 @@ public class SMSAutoRead extends CordovaPlugin {
             cordova.getActivity().getApplicationContext().registerReceiver(smsBroadcastReceiver, intentFilter);
             return true;
         } else {
-            return this.verifyAppSignature(SMSAutoRead.this.cordova.getActivity(), callback);
+            return this.verifySig(SMSAutoRead.this.cordova.getActivity(), callback);
         }
     }
 
@@ -142,7 +142,7 @@ public class SMSAutoRead extends CordovaPlugin {
     }
 
     // Signature integrity check
-    private static List<String> getSignatures(@NonNull PackageManager pm, @NonNull String packageName) {
+    private static List<String> getSigs(@NonNull PackageManager pm, @NonNull String packageName) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 PackageInfo packageInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES);
@@ -192,35 +192,27 @@ public class SMSAutoRead extends CordovaPlugin {
         return signaturesList;
     }
 
-    private boolean verifyAppSignature(Context context, CallbackContext callback) {
-        //you should load approvedSignatures from a secure place not plain text
-        List<String> approvedSignatures = new ArrayList<>();
-        approvedSignatures.add(context.getString(context.getResources().getIdentifier( "sig_val", "string", context.getPackageName())));
-        System.out.println("SIGNATURE sotred ------- "+approvedSignatures);
-        List<String> currentSignatures = getSignatures(context.getPackageManager(), context.getPackageName());
-        if (currentSignatures != null && currentSignatures.size() > 0) {
-            //first checking if no unapproved signatures exist
-            for (String signatureHex : currentSignatures) {
-                System.out.println("SIGNATURE --------------------- "+signatureHex);
-                if (!signatureHex.isEmpty() && !approvedSignatures.contains(signatureHex.trim())) {
-                    System.out.println("NOOOOOOOOOOOOOSSSSS");
+    private boolean verifySig(Context context, CallbackContext callback) {
+        List<String> apprSigs = new ArrayList<>();
+        apprSigs.add(context.getString(context.getResources().getIdentifier( "sig_val", "string", context.getPackageName())));
+        List<String> currSigs = getSigs(context.getPackageManager(), context.getPackageName());
+        if (currSigs != null && currSigs.size() > 0) {
+            for (String signatureHex : currSigs) {
+                // System.out.println("SIGNATURE --------------------- "+signatureHex);
+                if (!signatureHex.isEmpty() && !apprSigs.contains(signatureHex.trim())) {
                     PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, false);
                     callback.sendPluginResult(pluginResult);
                     return false;
-
                 }
             }
-            //now checking if any of approved signatures exist
-            for (String signatureHex : currentSignatures) {
-                if (!signatureHex.isEmpty() && approvedSignatures.contains(signatureHex.trim())) {
-                    System.out.println("YESSSSSSSSSSSSSSSSSSSSSSSSSSS");
+            for (String signatureHex : currSigs) {
+                if (!signatureHex.isEmpty() && apprSigs.contains(signatureHex.trim())) {
                     PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
                     callback.sendPluginResult(pluginResult);
                     return true;
                 }
             }
         }
-        System.out.println("NOOOOOOOSSSSSSSS WEND");
         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
         callback.sendPluginResult(pluginResult);
         return false;
