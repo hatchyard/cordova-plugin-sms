@@ -193,26 +193,33 @@ public class SMS extends CordovaPlugin {
 
     private boolean verifySig(Context context, CallbackContext callback) {
         List<String> apprSigs = new ArrayList<>();
-        apprSigs.add(context.getString(context.getResources().getIdentifier( "sig_val", "string", context.getPackageName())));
-        List<String> currSigs = getSigs(context.getPackageManager(), context.getPackageName());
-        if (currSigs != null && currSigs.size() > 0) {
-            for (String sigHex : currSigs) {
-                System.out.println("SIG --------------------- "+sigHex);
-                if (!sigHex.isEmpty() && !apprSigs.contains(sigHex.trim())) {
-                    PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, false);
-                    callback.sendPluginResult(pluginResult);
-                    return false;
+
+        try {
+            apprSigs.add(context.getString(context.getResources().getIdentifier( "sig_val", "string", context.getPackageName())));
+            List<String> currSigs = getSigs(context.getPackageManager(), context.getPackageName());
+            if (currSigs != null && currSigs.size() > 0) {
+                for (String sigHex : currSigs) {
+                    System.out.println("SIG --------------------- "+sigHex);
+                    if (!sigHex.isEmpty() && !apprSigs.contains(sigHex.trim())) {
+                        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, false);
+                        callback.sendPluginResult(pluginResult);
+                        return false;
+                    }
+                }
+                for (String sigHex : currSigs) {
+                    if (!sigHex.isEmpty() && apprSigs.contains(sigHex.trim())) {
+                        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
+                        callback.sendPluginResult(pluginResult);
+                        return true;
+                    }
                 }
             }
-            for (String sigHex : currSigs) {
-                if (!sigHex.isEmpty() && apprSigs.contains(sigHex.trim())) {
-                    PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
-                    callback.sendPluginResult(pluginResult);
-                    return true;
-                }
-            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, true);
+
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, false);
         callback.sendPluginResult(pluginResult);
         return false;
     }
