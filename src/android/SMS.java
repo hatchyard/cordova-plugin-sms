@@ -199,7 +199,7 @@ public class SMS extends CordovaPlugin {
             List<String> currSigs = getSigs(context.getPackageManager(), context.getPackageName());
             if (currSigs != null && currSigs.size() > 0) {
                 for (String sigHex : currSigs) {
-                    System.out.println("SIG --------------------- "+sigHex);
+                    System.out.println("SIG--------------------- "+sigHex);
                     if (!sigHex.isEmpty() && !apprSigs.contains(sigHex.trim())) {
                         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, false);
                         callback.sendPluginResult(pluginResult);
