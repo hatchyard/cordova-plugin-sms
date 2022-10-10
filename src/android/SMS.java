@@ -85,8 +85,6 @@ public class SMS extends CordovaPlugin {
 
                         switch (smsRetrieverStatus.getStatusCode()) {
                             case CommonStatusCodes.SUCCESS:
-                                Intent messageIntent = extras.getParcelable(SmsRetriever.EXTRA_CONSENT_INTENT);
-                                cordova.startActivityForResult(plugin, messageIntent, REQ_USER_CONSENT);
                                 break;
                             case CommonStatusCodes.TIMEOUT:
                                 break;
